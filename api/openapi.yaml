@@ -1,0 +1,328 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- description: Generated server url
+  url: http://localhost:8080
+paths:
+  /shop/updateQuantity:
+    put:
+      description: Update the product quantity
+      operationId: updateBasket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  format: int32
+                  type: integer
+                type: object
+          description: OK
+      tags:
+      - shopper-controller
+      x-eov-operation-handler: controllers/ShopperControllerController
+  /shop/addToBasket:
+    post:
+      description: "Add To Basket - if quantity is left blank, default is 1."
+      operationId: addToBasket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  format: int32
+                  type: integer
+                type: object
+          description: OK
+      tags:
+      - shopper-controller
+      x-eov-operation-handler: controllers/ShopperControllerController
+  /manage/editProduct:
+    post:
+      description: Edit Product - Change price or description.
+      operationId: editProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /manage/createProduct:
+    post:
+      description: Create a new product - leave ID as null
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /manage/applyDeal:
+    post:
+      description: "Apply/activate a standalone or bundle deal - Supply the discountCode.\
+        \ If not a bundle deal, ignore id2 and set id1 for the product to which the\
+        \ deal applies.  Supply both ids for bundle deals."
+      operationId: applyDeal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyDealRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApplyDealResponse'
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /shop/getProducts:
+    get:
+      description: Get all available products
+      operationId: getProducts
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+                type: array
+          description: OK
+      tags:
+      - shopper-controller
+      x-eov-operation-handler: controllers/ShopperControllerController
+  /shop/basketTotal:
+    get:
+      description: "Get the total, while applying any active deals"
+      operationId: getTotal
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                format: double
+                type: number
+          description: OK
+      tags:
+      - shopper-controller
+      x-eov-operation-handler: controllers/ShopperControllerController
+  /manage/getProducts:
+    get:
+      description: Get all available products
+      operationId: getProducts_1
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+                type: array
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /manage/availableDeals:
+    get:
+      description: Get all available deals
+      operationId: getAvailableDeals
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/SingleProductDeal'
+                type: array
+                uniqueItems: true
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /manage/availableBundleDeals:
+    get:
+      description: Get all available bundle deals
+      operationId: getAvailableBundleDeals
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/BundleDeal'
+                type: array
+                uniqueItems: true
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /shop/removeAll/{id}:
+    delete:
+      description: Remove a product
+      operationId: removeAll
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - shopper-controller
+      x-eov-operation-handler: controllers/ShopperControllerController
+  /manage/deleteProduct:
+    delete:
+      description: Delete the product
+      operationId: removeProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+  /manage/clearActiveDeals:
+    delete:
+      description: Clear/inactivate active deals
+      operationId: clearActiveDeals
+      responses:
+        "200":
+          description: OK
+      tags:
+      - manager-controller
+      x-eov-operation-handler: controllers/ManagerControllerController
+components:
+  schemas:
+    ProductRequest:
+      example:
+        quantity: 6
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        quantity:
+          format: int32
+          type: integer
+      type: object
+    Product:
+      example:
+        price: 6.027456183070403
+        name: name
+        description: description
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        price:
+          format: double
+          type: number
+        description:
+          type: string
+      type: object
+    ApplyDealRequest:
+      example:
+        discountCode: discountCode
+        id2: 6
+        id1: 0
+      properties:
+        discountCode:
+          type: string
+        id1:
+          format: int64
+          type: integer
+        id2:
+          format: int64
+          type: integer
+      type: object
+    ApplyDealResponse:
+      example:
+        dealApplied: true
+      properties:
+        dealApplied:
+          type: boolean
+      type: object
+    SingleProductDeal:
+      example:
+        discountCode: discountCode
+        description: description
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        discountCode:
+          type: string
+        description:
+          type: string
+      type: object
+    BundleDeal:
+      example:
+        discountCode: discountCode
+        id2: 6
+        id1: 0
+        description: description
+      properties:
+        id1:
+          format: int64
+          type: integer
+        id2:
+          format: int64
+          type: integer
+        discountCode:
+          type: string
+        description:
+          type: string
+      type: object
