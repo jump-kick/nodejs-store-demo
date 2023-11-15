@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
+const DataService = require('./DataService');
 
 /**
 * Add To Basket - if quantity is left blank, default is 1.
@@ -27,7 +28,7 @@ const addToBasket = (productRequest) => new Promise(
 const getProducts = () => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message:'Success from getProducts'}, 200));
+      resolve(Service.successResponse(DataService.getProducts(), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
