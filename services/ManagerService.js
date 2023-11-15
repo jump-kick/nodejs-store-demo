@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
+const DataService = require('./DataService');
 
 /**
 * Apply/activate a standalone or bundle deal - Supply the discountCode. If not a bundle deal, ignore id2 and set id1 for the product to which the deal applies.  Supply both ids for bundle deals.
@@ -45,7 +46,7 @@ const clearActiveDeals = () => new Promise(
 const createProduct = (product) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message: 'success from createProduct', product}, 200));
+      resolve(Service.successResponse(DataService.addProduct(product), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -115,7 +116,7 @@ const getAvailableDeals = () => new Promise(
 const getProducts_1 = () => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message: 'success from getProducts'}, 200));
+      resolve(Service.successResponse(DataService.getProducts(), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -130,10 +131,10 @@ const getProducts_1 = () => new Promise(
 * product Product 
 * no response value expected for this operation
 * */
-const deleteProduct = () => new Promise(
+const deleteProduct = (product) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message: 'success from removeProduct'}, 200));
+      resolve(Service.successResponse(DataService.deleteProduct(product), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
