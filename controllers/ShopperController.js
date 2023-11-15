@@ -1,5 +1,5 @@
 /**
- * The ShopperControllerController file is a very simple one, which does not need to be changed manually,
+ * The ShopperController file is a very simple one, which does not need to be changed manually,
  * unless there's a case where business logic routes the request to an entity which is not
  * the service.
  * The heavy lifting of the Controller item is done in Request.js - that is where request
