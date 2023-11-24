@@ -57,7 +57,7 @@ class ExpressServer {
     });
 
     //Manager endpoints
-    this.app.post('/manage/editProduct', (req, res) => {
+    this.app.put('/manage/editProduct', (req, res) => {
       editProduct(req, res)
     });
     

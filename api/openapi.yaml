@@ -53,7 +53,7 @@ paths:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
   /manage/editProduct:
-    post:
+    put:
       description: Edit Product - Change price or description.
       operationId: editProduct
       requestBody:
