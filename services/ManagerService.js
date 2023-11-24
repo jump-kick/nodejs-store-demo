@@ -64,7 +64,7 @@ const createProduct = (product) => new Promise(
 const editProduct = (prod) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message: 'success from editProduct', product: prod}, 200));
+      resolve(Service.successResponse(DataService.editProduct(prod), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',

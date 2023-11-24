@@ -26,23 +26,42 @@ class DataService {
     static deleteProduct(product) {
 
         if (this.#productIsValid(product)) {
-            let index = -1;
-            let i = 0;
 
-            while (i < this.#productList.length) {
-                if (this.#productList[i].id === product.id) {
-                    index = i;
-                    break;
-                } else {
-                    i++;
-                }
-            }
+            const index = this.#findProductIndex(product);
 
             if (index > -1) {
                 this.#productList.splice(index, 1);
             }
         }
         return product;
+    }
+
+    /**
+     * Any fields other than id are editable.
+     * @param {*} product 
+     */
+    static editProduct(product){
+
+        let returnObject = {
+            status: 404
+        };
+
+        if (this.#productIsValid(product)) {
+
+            const index = this.#findProductIndex(product);
+
+            if(index > -1){
+
+                this.#productList[index] = product;
+                returnObject = product;
+            }
+        }else{
+            returnObject = {
+                status: 400
+            };
+        }
+
+        return returnObject;
     }
 
     static #productIsValid(product) {
@@ -55,6 +74,26 @@ class DataService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * This function traverses the productList array looking for the given product's id.
+     * It returns either the index if found, or -1 if not found.
+     * @param {*} product 
+     */
+    static #findProductIndex(product){
+        let index = -1;
+        let i = 0;
+
+        while (i < this.#productList.length) {
+            if (this.#productList[i].id === product.id) {
+                index = i;
+                break;
+            } else {
+                i++;
+            }
+        }
+        return index;
     }
 
     /**
