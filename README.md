@@ -7,6 +7,7 @@ This server was generated using the [OpenAPI Generator](https://openapi-generato
 - Add/create a new product in the ManagerController
 - Get all available products in the ShopperController or ManagerController
 - Delete a product in the ManagerController
+- Edit a product (name, description, or price) in the ManagerController
 
 For now, the other endpoints return a success message.  The swagger spec was taken from this Java project: [Spring Boot Store Demo](https://github.com/jump-kick/springboot-store-demo).  
 
@@ -24,3 +25,10 @@ You can use
 npm start
 ```
 to install the packages and start the server.
+
+### Running the Unit tests
+You can use
+```
+npm test
+```
+to run the mocha/chai tests.
