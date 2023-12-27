@@ -14,11 +14,18 @@ class DataService {
         return this.#productList;
     }
 
+    /**
+     * Add the product to the datastore; with an auto-generated id
+     * @param {*} product 
+     * @returns the product back with a positive id if successful, id: -1 if unsuccessful
+     */
     static addProduct(product) {
 
         if (this.#productIsValid(product)) {
             product.id = this.#assignId(this.#productList);
             this.#productList.push(product);
+        }else{//for invalid products, assigned ID is -1
+            product.id = -1;
         }
         return product;
     }
@@ -31,6 +38,8 @@ class DataService {
 
             if (index > -1) {
                 this.#productList.splice(index, 1);
+            }else{
+                product.id = -1;
             }
         }
         return product;

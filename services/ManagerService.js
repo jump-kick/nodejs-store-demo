@@ -46,7 +46,16 @@ const clearActiveDeals = () => new Promise(
 const createProduct = (product) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse(DataService.addProduct(product), 200));
+      const addedProduct = DataService.addProduct(product);
+      let statusCode = 0;
+
+      if(addedProduct.id > -1){
+        statusCode = 200;
+      }else{
+        statusCode = 400; //product wasn't valid, so it was rejected
+      }
+
+      resolve(Service.successResponse(addedProduct, statusCode));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -134,11 +143,19 @@ const getProducts_1 = () => new Promise(
 const deleteProduct = (product) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse(DataService.deleteProduct(product), 200));
+      const deletedProduct = DataService.deleteProduct(product);
+      let statusCode = 0;
+
+      if(deletedProduct.id > -1){
+        statusCode = 200;
+      }else{
+        statusCode = 400; //product wasn't valid, so it was rejected
+      }
+      resolve(Service.successResponse(deletedProduct, statusCode));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
-        e.status || 405,
+        e.status || 400,
       ));
     }
   },
