@@ -8,8 +8,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('./logger');
-const { getAvailableBundleDeals, applyDeal, editProduct, createProduct, getProducts_1, getAvailableDeals, deleteProduct, clearActiveDeals } = require('./controllers/ManagerController');
-const { updateBasket, addToBasket, getProducts, getTotal, removeAll } = require('./controllers/ShopperController');
+const version1Routes = require('./version1Routes');
 
 class ExpressServer {
   constructor(port, openApiYaml) {
@@ -35,59 +34,9 @@ class ExpressServer {
     //View the openapi document in a visual interface. Should be able to test from this page
     this.app.use('/swagger-ui', swaggerUI.serve, swaggerUI.setup(this.schema));
 
-    //Shopper endpoints
-    this.app.put('/shop/updateQuantity', (req, res) => {
-      updateBasket(req, res)
-    });
+    //Version 1 API routes
+    this.app.use('/v1', version1Routes);
 
-    this.app.post('/shop/addToBasket', (req, res) => {
-      addToBasket(req, res)
-    });
-
-    this.app.get('/shop/getProducts', (req, res) => {
-      getProducts(req, res)
-    });
-
-    this.app.get('/shop/basketTotal', (req, res) => {
-      getTotal(req, res)
-    });
-
-    this.app.delete('/shop/removeAll/:id', (req, res) => {
-      removeAll(req, res)
-    });
-
-    //Manager endpoints
-    this.app.put('/manage/editProduct', (req, res) => {
-      editProduct(req, res)
-    });
-    
-    this.app.post('/manage/createProduct', (req, res) => {
-      createProduct(req, res)
-    });
-
-    this.app.post('/manage/applyDeal', (req, res) => {
-      applyDeal(req, res)
-    });
-
-    this.app.get('/manage/getProducts', (req, res) => {
-      getProducts_1(req, res)
-    });
-
-    this.app.get('/manage/availableDeals', (req, res) => {
-      getAvailableDeals(req, res)
-    });
-
-    this.app.get('/manage/availableBundleDeals', (req, res) => {
-      getAvailableBundleDeals(req, res)
-    });
-
-    this.app.delete('/manage/deleteProduct', (req, res) => {
-      deleteProduct(req, res)
-    });
-
-    this.app.delete('/manage/clearActiveDeals', (req, res) => {
-      clearActiveDeals(req, res)
-    });
   }
 
   launch() {
