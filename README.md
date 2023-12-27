@@ -3,6 +3,8 @@
 
 ## Overview
 This server was generated using the [OpenAPI Generator](https://openapi-generator.tech) project and then implemented by me.  It is still a work in progress.  Latest feautres:  
+- Added API versioning to the URL paths
+- Added more unit tests and input validation for the API endpoints
 - Added a transient "database" to the app for demo purposes, DataService.js, along with some baseline products to seed the database.
 - Add/create a new product in the ManagerController
 - Get all available products in the ShopperController or ManagerController
