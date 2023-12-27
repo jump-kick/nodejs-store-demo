@@ -6,7 +6,7 @@ servers:
 - description: Generated server url
   url: http://localhost:8080
 paths:
-  /shop/updateQuantity:
+  /v1/shop/updateQuantity:
     put:
       description: Update the product quantity
       operationId: updateBasket
@@ -29,7 +29,7 @@ paths:
       tags:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
-  /shop/addToBasket:
+  /v1/shop/addToBasket:
     post:
       description: "Add To Basket - if quantity is left blank, default is 1."
       operationId: addToBasket
@@ -52,7 +52,7 @@ paths:
       tags:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
-  /manage/editProduct:
+  /v1/manage/editProduct:
     put:
       description: Edit Product - Change price or description.
       operationId: editProduct
@@ -72,7 +72,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /manage/createProduct:
+  /v1/manage/createProduct:
     post:
       description: Create a new product - leave ID as null
       operationId: createProduct
@@ -92,7 +92,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /manage/applyDeal:
+  /v1/manage/applyDeal:
     post:
       description: "Apply/activate a standalone or bundle deal - Supply the discountCode.\
         \ If not a bundle deal, ignore id2 and set id1 for the product to which the\
@@ -114,7 +114,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /shop/getProducts:
+  /v1/shop/getProducts:
     get:
       description: Get all available products
       operationId: getProducts
@@ -130,7 +130,7 @@ paths:
       tags:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
-  /shop/basketTotal:
+  /v1/shop/basketTotal:
     get:
       description: "Get the total, while applying any active deals"
       operationId: getTotal
@@ -145,7 +145,7 @@ paths:
       tags:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
-  /manage/getProducts:
+  /v1/manage/getProducts:
     get:
       description: Get all available products
       operationId: getProducts_1
@@ -161,7 +161,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /manage/availableDeals:
+  /v1/manage/availableDeals:
     get:
       description: Get all available deals
       operationId: getAvailableDeals
@@ -178,7 +178,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /manage/availableBundleDeals:
+  /v1/manage/availableBundleDeals:
     get:
       description: Get all available bundle deals
       operationId: getAvailableBundleDeals
@@ -195,7 +195,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /shop/removeAll/{id}:
+  /v1/shop/removeAll/{id}:
     delete:
       description: Remove a product
       operationId: removeAll
@@ -214,7 +214,7 @@ paths:
       tags:
       - shopper-controller
       x-eov-operation-handler: controllers/ShopperControllerController
-  /manage/deleteProduct:
+  /v1/manage/deleteProduct:
     delete:
       description: Delete the product
       operationId: removeProduct
@@ -230,7 +230,7 @@ paths:
       tags:
       - manager-controller
       x-eov-operation-handler: controllers/ManagerControllerController
-  /manage/clearActiveDeals:
+  /v1/manage/clearActiveDeals:
     delete:
       description: Clear/inactivate active deals
       operationId: clearActiveDeals
@@ -256,7 +256,7 @@ components:
       type: object
     Product:
       example:
-        price: 6.027456183070403
+        price: 6.00
         name: name
         description: description
         id: 0
