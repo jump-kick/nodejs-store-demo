@@ -1,4 +1,5 @@
 const products = require('../data/products');
+const deals = require('../data/deals');
 
 /**\
  * In lieu of a database, we are just using a simple, transient array as a 
@@ -8,6 +9,7 @@ class DataService {
 
     //For demo purposes only...in the real world, this is a database
     static #productList = [...products.productsArray];
+    static #availableDealsList = [...deals.dealsArray];
 
     static getProducts() {
 
@@ -120,6 +122,13 @@ class DataService {
         });
 
         return maxId;
+    }
+
+    /**
+     * Returns all the available deals as an array
+     */
+    static getAvailableDeals(){
+        return this.#availableDealsList;
     }
 }
 

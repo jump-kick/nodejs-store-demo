@@ -50,7 +50,7 @@ describe('Manager endpoints', () => {
                     DataService.deleteProduct(actualProduct);
                     done();
                 })
-            
+
         })
 
         it('should return 400 status if product is invalid', (done) => {
@@ -109,12 +109,12 @@ describe('Manager endpoints', () => {
     /**
      * Test the delete endpoint
      */
-        describe('Delete a product', () => {
-            it('should be deleted',(done) => {
+    describe('Delete a product', () => {
+        it('should be deleted', (done) => {
 
-                const product = DataService.getProducts()[0];
+            const product = DataService.getProducts()[0];
 
-                chai.request(server.app)
+            chai.request(server.app)
                 .delete('/v1/manage/deleteProduct')
                 .send(product)
                 .end((err, res) => {
@@ -132,20 +132,20 @@ describe('Manager endpoints', () => {
                     //Add product back in after tests are done
                     DataService.addProduct(product);
                 })
-                done();
-            })
+            done();
+        })
 
-            it('should return a status = 400 and an id = -1 if product is invalid',(done) => {
-                let product = {
-                    name: "Doesn't exist",
-                    description: "uh uh",
-                    price: 10000000.00,
-                    id: 23456
-                }
+        it('should return a status = 400 and an id = -1 if product is invalid', (done) => {
+            let product = {
+                name: "Doesn't exist",
+                description: "uh uh",
+                price: 10000000.00,
+                id: 23456
+            }
 
-                const prodSum = DataService.getProducts().length;
+            const prodSum = DataService.getProducts().length;
 
-                chai.request(server.app)
+            chai.request(server.app)
                 .delete('/v1/manage/deleteProduct')
                 .send(product)
                 .end((err, res) => {
@@ -157,6 +157,42 @@ describe('Manager endpoints', () => {
                     chai.assert(prodSum == DataService.getProducts().length, 'No products should be deleted');
                     done();
                 })
-            })
         })
+    })
+
+    /**
+    * Test the get available deals endpoint
+    */
+    describe('Gets all available deals', () => {
+
+        it('gets all available deals', (done) => {
+
+            const deals = DataService.getAvailableDeals();
+
+            chai.request(server.app)
+                .get('/v1/manage/availableDeals')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.have.property('payload');
+
+                    for(i = 0; i < deals.length; i++){
+                        res.body.payload[i].should.have.property('id').eql(deals[i].id);
+                        res.body.payload[i].should.have.property('description').eql(deals[i].description);
+                        res.body.payload[i].should.have.property('discountCode').eql(deals[i].discountCode);
+                    }
+                    // res.body.payload.should.have.property('id').eql(product.id);
+                    // res.body.payload.should.have.property('price').eql(product.price);
+                    // res.body.payload.should.have.property('name').eql(product.name);
+                    // res.body.payload.should.have.property('description').eql(product.description);
+
+                    // DataService.getProducts().forEach((p) => {
+                    //     chai.assert(p.id != product.id); //Product should no longer exist in the array
+                    // })
+
+                    //Add product back in after tests are done
+                    //DataService.addProduct(product);
+                    done();
+                })
+        })    
+    })
 })

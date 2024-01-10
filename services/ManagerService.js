@@ -108,7 +108,7 @@ const getAvailableBundleDeals = () => new Promise(
 const getAvailableDeals = () => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message: 'success from getAvailableDeals'}, 200));
+      resolve(Service.successResponse(DataService.getAvailableDeals(), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
