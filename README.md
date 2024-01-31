@@ -3,6 +3,8 @@
 
 ## Overview
 This server was generated using the [OpenAPI Generator](https://openapi-generator.tech) project and then implemented by me.  It is still a work in progress.  Latest feautres:  
+- Implemented the add to basket endpoint
+- Implemented the GET Available Deals endpoint
 - Added API versioning to the URL paths
 - Added more unit tests and input validation for the API endpoints
 - Added a transient "database" to the app for demo purposes, DataService.js, along with some baseline products to seed the database.

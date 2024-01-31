@@ -130,6 +130,22 @@ class DataService {
     static getAvailableDeals(){
         return this.#availableDealsList;
     }
+
+    /**
+     * Finds a product by ID.  Returns the product or null if not found
+     */
+    static findProductById(id){
+
+        let p = null;
+
+        for(i = 0; i < this.#productList.length; i++){
+            if(this.#productList[i].id == id){
+                p = this.#productList[i];
+                break;
+            }
+        }
+        return p;
+    }
 }
 
 module.exports = DataService
