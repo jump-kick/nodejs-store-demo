@@ -1,14 +1,12 @@
-//Require the dev-dependencies
 const chai = require('chai');
 const should = chai.should();
 const chaiHttp = require('chai-http');
 const ExpressServer = require('../expressServer');
 const config = require('../config');
 const DataService = require('../services/DataService');
-
 chai.use(chaiHttp);
 
-let server = new ExpressServer(config.URL_PORT, config.OPENAPI_YAML);
+let server = new ExpressServer(0, config.OPENAPI_YAML);
 server.launch();
 
 //Parent block
@@ -26,7 +24,7 @@ describe('Manager endpoints', () => {
             id: 555
         };
 
-        it('should create a new product', (done) => {
+        it('should create a new product', () => {
             DataService.getProducts().forEach((p) => {
                 chai.assert(p.name != NINTENDO_SWITCH, 'Switch shouldn\'t be there yet');
             })
@@ -48,12 +46,11 @@ describe('Manager endpoints', () => {
 
                     //Clean up test
                     DataService.deleteProduct(actualProduct);
-                    done();
                 })
 
         })
 
-        it('should return 400 status if product is invalid', (done) => {
+        it('should return 400 status if product is invalid', () => {
 
             product.name = null;//product with error; name can't be null
 
@@ -69,7 +66,6 @@ describe('Manager endpoints', () => {
                     DataService.getProducts().forEach((p) => {
                         chai.assert(p.name != NINTENDO_SWITCH, 'Switch shouldn\'t be there');
                     })
-                    done();
                 })
 
         })
@@ -86,7 +82,7 @@ describe('Manager endpoints', () => {
             id: 2
         };
 
-        it('should edit the product', (done) => {
+        it('should edit the product', () => {
 
             chai.request(server.app)
                 .put('/v1/manage/editProduct')
@@ -100,7 +96,6 @@ describe('Manager endpoints', () => {
                     res.body.payload.should.have.property('description').eql('Expensive smart phone');
                     let productsArray = DataService.getProducts();
                     chai.expect(productsArray[1].price).to.equal(500.00);
-                    done();
 
                 })
         })
@@ -110,7 +105,7 @@ describe('Manager endpoints', () => {
      * Test the delete endpoint
      */
     describe('Delete a product', () => {
-        it('should be deleted', (done) => {
+        it('should be deleted', () => {
 
             const product = DataService.getProducts()[0];
 
@@ -132,10 +127,9 @@ describe('Manager endpoints', () => {
                     //Add product back in after tests are done
                     DataService.addProduct(product);
                 })
-            done();
         })
 
-        it('should return a status = 400 and an id = -1 if product is invalid', (done) => {
+        it('should return a status = 400 and an id = -1 if product is invalid', () => {
             let product = {
                 name: "Doesn't exist",
                 description: "uh uh",
@@ -155,7 +149,6 @@ describe('Manager endpoints', () => {
                     res.body.payload.should.have.property('id').eql(-1);
 
                     chai.assert(prodSum == DataService.getProducts().length, 'No products should be deleted');
-                    done();
                 })
         })
     })
@@ -165,7 +158,7 @@ describe('Manager endpoints', () => {
     */
     describe('Gets all available deals', () => {
 
-        it('gets all available deals', (done) => {
+        it('gets all available deals', () => {
 
             const deals = DataService.getAvailableDeals();
 
@@ -180,18 +173,6 @@ describe('Manager endpoints', () => {
                         res.body.payload[i].should.have.property('description').eql(deals[i].description);
                         res.body.payload[i].should.have.property('discountCode').eql(deals[i].discountCode);
                     }
-                    // res.body.payload.should.have.property('id').eql(product.id);
-                    // res.body.payload.should.have.property('price').eql(product.price);
-                    // res.body.payload.should.have.property('name').eql(product.name);
-                    // res.body.payload.should.have.property('description').eql(product.description);
-
-                    // DataService.getProducts().forEach((p) => {
-                    //     chai.assert(p.id != product.id); //Product should no longer exist in the array
-                    // })
-
-                    //Add product back in after tests are done
-                    //DataService.addProduct(product);
-                    done();
                 })
         })    
     })
