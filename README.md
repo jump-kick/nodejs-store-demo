@@ -3,6 +3,7 @@
 
 ## Overview
 This server was generated using the [OpenAPI Generator](https://openapi-generator.tech) project and then implemented by me.  It is still a work in progress.  Latest feautres:  
+- Started implementing the getTotal endpoint
 - Implemented the add to basket endpoint
 - Implemented the GET Available Deals endpoint
 - Added API versioning to the URL paths

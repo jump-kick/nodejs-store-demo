@@ -46,7 +46,7 @@ const getProducts = () => new Promise(
 const getTotal = () => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({message:'Success from getTotal'}, 200));
+      resolve(Service.successResponse(Basket.getTotal(), 200));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',

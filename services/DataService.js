@@ -5,10 +5,10 @@ const deals = require('../data/deals');
  * In lieu of a database, we are just using a simple, transient array as a 
  * data store for the application. This is for demo purposes only.
  */
-class DataService {
+module.exports = class DataService {
 
     //For demo purposes only...in the real world, this is a database
-    static #productList = [...products.productsArray];
+    static #productList = [...products.load()];
     static #availableDealsList = [...deals.dealsArray];
 
     static getProducts() {
@@ -138,14 +138,20 @@ class DataService {
 
         let p = null;
 
-        for(i = 0; i < this.#productList.length; i++){
+        for(let i = 0; i < this.#productList.length; i++){
             if(this.#productList[i].id == id){
                 p = this.#productList[i];
                 break;
             }
         }
+
         return p;
     }
-}
 
-module.exports = DataService
+    /**
+     * Reload the datastore from the file - nullifying any edits
+     */
+    static reload(){
+        this.#productList = [...products.load()];
+    }
+}

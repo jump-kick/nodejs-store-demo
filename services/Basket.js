@@ -1,6 +1,6 @@
-//import DataService from "./DataService";
+const DataService = require('./DataService');
 
-class Basket {
+module.exports = class Basket {
     static #basket = new Map();
 
     static addToBasket(basketRequest) {
@@ -14,15 +14,16 @@ class Basket {
         return this.getBasket();
     }
 
-    // static getTotal() {
-    //     let total = 0.0;
+    static getTotal() {
+        let total = 0.0;
 
-    //     for (const [product, quantity] of this.#basket) {
-    //         total += (product.price * quantity)
-    //     }
+        for (const {id, quantity} of this.getBasket()) {
+            const price = DataService.findProductById(id).price;
+            total += (price * quantity);
+        }
 
-    //     return total;
-    // }
+        return total;
+    }
 
     /**
      * Gets the current basket as an array
@@ -43,5 +44,3 @@ class Basket {
         this.#basket.clear();
     }
 }
-
-module.exports = Basket
