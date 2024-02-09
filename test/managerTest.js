@@ -11,6 +11,10 @@ server.launch();
 
 //Parent block
 describe('Manager endpoints', () => {
+    after(function(done){
+        DataService.reload();
+        done();
+    })
     /**
      * Test the create endpoint
      */
@@ -97,6 +101,9 @@ describe('Manager endpoints', () => {
                     let productsArray = DataService.getProducts();
                     chai.expect(productsArray[1].price).to.equal(500.00);
 
+                    //reset product
+                    product.price = 600.00;
+                    DataService.editProduct(product);
                 })
         })
     })
@@ -105,7 +112,7 @@ describe('Manager endpoints', () => {
      * Test the delete endpoint
      */
     describe('Delete a product', () => {
-        it('should be deleted', () => {
+        it('should be deleted', (done) => {
 
             const product = DataService.getProducts()[0];
 
@@ -120,16 +127,18 @@ describe('Manager endpoints', () => {
                     res.body.payload.should.have.property('name').eql(product.name);
                     res.body.payload.should.have.property('description').eql(product.description);
 
-                    DataService.getProducts().forEach((p) => {
+                    for(let i = 0; i < DataService.getProducts().length; i++){
+                        const p = DataService.getProducts()[i];
                         chai.assert(p.id != product.id); //Product should no longer exist in the array
-                    })
+                    }
 
                     //Add product back in after tests are done
                     DataService.addProduct(product);
+                    done();
                 })
         })
 
-        it('should return a status = 400 and an id = -1 if product is invalid', () => {
+        it('should return a status = 400 and an id = -1 if product is invalid', (done) => {
             let product = {
                 name: "Doesn't exist",
                 description: "uh uh",
@@ -149,6 +158,7 @@ describe('Manager endpoints', () => {
                     res.body.payload.should.have.property('id').eql(-1);
 
                     chai.assert(prodSum == DataService.getProducts().length, 'No products should be deleted');
+                    done();
                 })
         })
     })
