@@ -120,6 +120,23 @@ describe('Shopper endpoints', function shopperEndpoints() {
                     done();
                 });
         })
+        it('Should throw an error if an invalid item is added', function (done) {
+
+            let badItem = {
+                quantity: 1,
+                id: 123456
+            }
+
+            chai.request(server.app)
+                .post('/v1/shop/addToBasket')
+                .send(badItem)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('code').eql(400);
+                    res.body.should.have.property('error').eql("Cannot add invalid product to basket.");
+                    done();
+                });
+        })
     });
 
     describe('Get the basket total', function () {

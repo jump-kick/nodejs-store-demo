@@ -1,9 +1,16 @@
 const DataService = require('./DataService');
+const HttpError = require('../model/HttpError');
 
 module.exports = class Basket {
     static #basket = new Map();
 
     static addToBasket(basketRequest) {
+
+        if(!DataService.findProductById(basketRequest.id)){
+
+            throw new HttpError("Cannot add invalid product to basket.", 400);
+        }
+
         let count = this.#basket.get(basketRequest.id)
 
         if (count === undefined) {
