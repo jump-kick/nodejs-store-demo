@@ -45,7 +45,6 @@ describe('Shopper endpoints', function shopperEndpoints() {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.have.property('payload');
-
                     res.body.payload[0].should.have.property('id').eql(1);
                     res.body.payload[0].should.have.property('quantity').eql(1);
 
@@ -129,6 +128,123 @@ describe('Shopper endpoints', function shopperEndpoints() {
 
             chai.request(server.app)
                 .post('/v1/shop/addToBasket')
+                .send(badItem)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('code').eql(400);
+                    res.body.should.have.property('error').eql("Cannot add invalid product to basket.");
+                    done();
+                });
+        })
+    });
+
+    describe('Update a product in the basket', function () {
+        const productRequest1 = {
+            "quantity": 1,
+            "id": 1
+        };
+
+        const productRequest2 = {
+            "quantity": 4,
+            "id": 2
+        };
+
+        const productRequest3 = {
+            "quantity": 1,
+            "id": 3
+        };
+
+        it('should update a product to the basket', function (done) {
+
+            Basket.addToBasket({
+                "quantity": 20,
+                "id": 1
+            });
+
+            chai.request(server.app)
+                .put('/v1/shop/updateQuantity')
+                .send(productRequest1)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.have.property('payload');
+                    res.body.payload[0].should.have.property('id').eql(1);
+                    res.body.payload[0].should.have.property('quantity').eql(1);
+                    done();
+                });
+
+        })
+
+        // it('Should increase the basket quantity when more of the same item are added', function (done) {
+        //     //Already one in the basket
+        //     Basket.addToBasket(productRequest1);
+
+        //     chai.request(server.app)
+        //         .post('/v1/shop/addToBasket')
+        //         .send(productRequest1)
+        //         .end((err, res) => {
+        //             res.should.have.status(200);
+        //             res.body.should.have.property('payload');
+
+        //             res.body.payload[0].should.have.property('id').eql(1);
+        //             res.body.payload[0].should.have.property('quantity').eql(2);
+
+        //             const firstEntry = Basket.getBasket()[0];
+
+        //             chai.expect(firstEntry.id).to.equal(productRequest1.id);
+        //             chai.expect(firstEntry.quantity).to.equal(2);
+        //             done();
+        //         });
+        // })
+
+        // it('Should retain the basket state when more items are added', function (done) {
+
+        //     //Already some items in the basket
+        //     Basket.addToBasket(productRequest1);
+        //     Basket.addToBasket(productRequest1);
+        //     Basket.addToBasket(productRequest2);
+
+        //     chai.request(server.app)
+        //         .post('/v1/shop/addToBasket')
+        //         .send(productRequest3)
+        //         .end((err, res) => {
+        //             res.should.have.status(200);
+        //             res.body.should.have.property('payload');
+
+        //             res.body.payload[0].should.have.property('id').eql(1);
+        //             res.body.payload[0].should.have.property('quantity').eql(2);
+
+        //             const firstEntry = Basket.getBasket()[0];
+
+        //             chai.expect(firstEntry.id).to.equal(productRequest1.id);
+        //             chai.expect(firstEntry.quantity).to.equal(2);
+
+        //             res.body.payload[1].should.have.property('id').eql(2);
+        //             res.body.payload[1].should.have.property('quantity').eql(4);
+
+        //             const secondEntry = Basket.getBasket()[1];
+
+        //             chai.expect(secondEntry.id).to.equal(productRequest2.id);
+        //             chai.expect(secondEntry.quantity).to.equal(productRequest2.quantity);
+
+        //             res.body.payload[2].should.have.property('id').eql(3);
+        //             res.body.payload[2].should.have.property('quantity').eql(1);
+
+        //             const thirdEntry = Basket.getBasket()[2];
+
+        //             chai.expect(thirdEntry.id).to.equal(productRequest3.id);
+        //             chai.expect(thirdEntry.quantity).to.equal(productRequest3.quantity);
+        //             done();
+        //         });
+        // })
+        it('Should throw an error if an invalid item is added', function (done) {
+
+            let badItem = {
+                quantity: 1,
+                id: 123456
+            }
+
+            chai.request(server.app)
+                .put('/v1/shop/updateQuantity')
                 .send(badItem)
                 .end((err, res) => {
                     res.should.have.status(400);

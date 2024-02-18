@@ -82,7 +82,7 @@ const removeAll = (params) => new Promise(
 const updateBasket = (productRequest) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse(productRequest));
+      resolve(Service.successResponse(Basket.updateBasket(productRequest)));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',

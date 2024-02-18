@@ -6,10 +6,7 @@ module.exports = class Basket {
 
     static addToBasket(basketRequest) {
 
-        if(!DataService.findProductById(basketRequest.id)){
-
-            throw new HttpError("Cannot add invalid product to basket.", 400);
-        }
+        this.#validateId(basketRequest.id);
 
         let count = this.#basket.get(basketRequest.id)
 
@@ -19,6 +16,14 @@ module.exports = class Basket {
 
         this.#basket.set(basketRequest.id, count + basketRequest.quantity);
         return this.getBasket();
+    }
+
+    static updateBasket(basketRequest){
+        
+        this.#validateId(basketRequest.id);
+        this.#basket.set(basketRequest.id, basketRequest.quantity);
+        return this.getBasket();
+
     }
 
     static getTotal() {
@@ -37,7 +42,7 @@ module.exports = class Basket {
      * @returns An array of tuples, where element 0 is the product id and element 1 is the quantity
      */
     static getBasket() {
-        const basketArray = [];
+        let basketArray = [];
         this.#basket.forEach((v, k) => {
             basketArray.push({ id: k, quantity: v });
         })
@@ -49,5 +54,12 @@ module.exports = class Basket {
      */
     static empty(){
         this.#basket.clear();
+    }
+
+    static #validateId(id){
+        if(!DataService.findProductById(id)){
+
+            throw new HttpError("Cannot add invalid product to basket.", 400);
+        }
     }
 }
